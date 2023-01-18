@@ -1,5 +1,5 @@
 class Track():
-    def __init__(self,distance):
+    def __init__(self, distance):
         self._distance=distance
         self._spaceship_list=[]
         self._winner=None
@@ -11,7 +11,7 @@ class Track():
         return self._winner
 
 class SpaceShip():
-    def __init__(self,speed,nom,colour="white",width=0,height=0,brand="none"):
+    def __init__(self,speed=0,nom='',colour="white",width=0,height=0,brand="none"):
         self._speed=speed
         self._nom=nom
         self._colour=colour
@@ -28,8 +28,22 @@ class SpaceShip():
         return self._width
     def get_brand(self):
         return self._brand
+
     def __repr__(self):
         return f'{self._nom}:{self._speed} km/h,{self._colour},{self._height},{self._width},{self._brand}'
+
+    def __eq__(self, other):
+        if self._speed >= other._speed:
+            return True
+        if self._colour == other._colour:
+            return True
+        if self._width == other._width:
+            return True
+        if self._height == other._height:
+            return True
+        if self._brand == other._brand:
+            return True
+        return False
 
 class Garage():
     def __init__(self,max_size):
@@ -42,26 +56,32 @@ class Garage():
         else :
             return "le garage est plein"
 
-    def search(self,speed,colour,height,width,brand):
-        resultat=[]
-        for elt in self._spaceship_list:
-            if elt.get_speed()==speed:
-                resultat.append(elt)
-                continue
-            if elt.get_colour()==colour:
-                resultat.append(elt)
-                continue
-            if elt.get_height()==height:
-                resultat.append(elt)
-                continue
-            if elt.get_width()==width:
-                resultat.append(elt)
-                continue
-            if elt.get_brand()==brand:
-                resultat.append(elt)
-                continue
-        return resultat
+    # def search(self,speed,colour,height,width,brand):
+    #     resultat=[]
+    #     for elt in self._spaceship_list:
+    #         if elt.get_speed()==speed:
+    #             resultat.append(elt)
+    #             continue
+    #         if elt.get_colour()==colour:
+    #             resultat.append(elt)
+    #             continue
+    #         if elt.get_height()==height:
+    #             resultat.append(elt)
+    #             continue
+    #         if elt.get_width()==width:
+    #             resultat.append(elt)
+    #             continue
+    #         if elt.get_brand()==brand:
+    #             resultat.append(elt)
+    #             continue
+    #     return resultat
 
+    def search(self,spaceship_wanted):
+        result=[]
+        for elt in self._spaceship_list:
+            if elt==spaceship_wanted:
+                result.append(elt)
+        return result
 
 
 track1=Track(2000)
@@ -84,6 +104,10 @@ garage.add_spaceship(SpaceShip3)
 garage.add_spaceship(SpaceShip4)
 garage.add_spaceship(SpaceShip5)
 
-track1.start_race()
-print(track1.get_winner())
-print(garage.search(5,"black",5,8,"star"))
+# track1.start_race()
+# print(track1.get_winner())
+
+spaceship_wanted=SpaceShip(speed=8,colour='red')
+print(f'Spaceship wanted: {spaceship_wanted}')
+result=garage.search(spaceship_wanted)
+print(result)
